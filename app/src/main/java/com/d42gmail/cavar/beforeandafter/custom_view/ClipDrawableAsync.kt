@@ -1,5 +1,6 @@
 package com.d42gmail.cavar.beforeandafter.custom_view
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ClipDrawable
@@ -11,7 +12,9 @@ import android.widget.SeekBar
 import com.bumptech.glide.Glide
 import java.lang.ref.WeakReference
 
-class ClipDrawableAsync<T>(imageLeftView: ImageView, imageRightView: ImageView, seekBar: SeekBar, var progress: Int, private val loadedFinishedListener: LoadingListener? = null) : AsyncTask<T, Void, ArrayList<ClipDrawable?>>() {
+class ClipDrawableAsync<T>(imageLeftView: ImageView, imageRightView: ImageView, seekBar: SeekBar,
+                           var progress: Int, private val context: Context,
+                           private val loadedFinishedListener: LoadingListener? = null) : AsyncTask<T, Void, ArrayList<ClipDrawable?>>() {
     private val imageRefLeft: WeakReference<ImageView> = WeakReference(imageLeftView)
     private val imageRefRight: WeakReference<ImageView> = WeakReference(imageRightView)
     private val seekBarRef: WeakReference<SeekBar> = WeakReference(seekBar)
@@ -21,27 +24,19 @@ class ClipDrawableAsync<T>(imageLeftView: ImageView, imageRightView: ImageView, 
         Looper.myLooper()?.let { Looper.prepare() }
         try {
             //Left bitmap
-            var rawLeftBitmap = Glide.with(imageRefLeft.get()!!.context)
-                    .load(args[0])
-                    .asBitmap()
-                    .centerCrop()
-                    .into(getWidth(), getHeigh())
-                    .get()
+            var rawLeftBitmap = Glide.with(context).asBitmap().load(args[0])
+                .centerCrop().submit(getWidth(), getHeigh()).get()
             val scaledLeftBitmap = getScaledBitmap(rawLeftBitmap)
             scaledLeftBitmap?.let {
                 rawLeftBitmap = scaledLeftBitmap
             }
-            val bitmapDrawable = BitmapDrawable(imageRefLeft.get()!!.context.resources, rawLeftBitmap)
+            val bitmapDrawable = BitmapDrawable(context.resources, rawLeftBitmap)
             //Right Bitmap
-            val rightBitmap = Glide.with(imageRefRight.get()!!.context)
-                    .load(args[1])
-                    .asBitmap()
-                    .centerCrop()
-                    .into(getWidth(), getHeigh())
-                    .get()
+            val rightBitmap = Glide.with(context).asBitmap().load(args[1])
+                .centerCrop().submit(getWidth(), getHeigh()).get()
 
             array.add(ClipDrawable(bitmapDrawable, Gravity.START, ClipDrawable.HORIZONTAL))
-            array.add(ClipDrawable(BitmapDrawable(imageRefLeft.get()!!.context.resources, rightBitmap), Gravity.START, ClipDrawable.HORIZONTAL))
+            array.add(ClipDrawable(BitmapDrawable(context.resources, rightBitmap), Gravity.START, ClipDrawable.HORIZONTAL))
         } catch (e: Exception) {
             e.printStackTrace()
             array.clear()

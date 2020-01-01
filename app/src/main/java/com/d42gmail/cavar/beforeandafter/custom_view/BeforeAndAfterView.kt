@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.os.Handler
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.SeekBar
+import androidx.core.content.ContextCompat
 import com.d42gmail.cavar.beforeandafter.R
 import com.d42gmail.cavar.beforeandafter.utils.convertDpToPix
 import java.lang.Exception
@@ -131,18 +131,18 @@ class BeforeAndAfterView(context: Context?, attrs: AttributeSet?, defStyleAttr: 
         ivPlaceHolder.setImageDrawable(drawable)
     }
 
-    fun loadImagesByUrl(imageLeftUrl: String, imageRightUrl: String) = ClipDrawableAsync<String>(ptBackgroundImageLeft, ptBackgroundImageRight, ptSeekBar, validateProgress(progress!!), this).execute(imageLeftUrl, imageRightUrl)
+    fun loadImagesByUrl(imageLeftUrl: String, imageRightUrl: String) = ClipDrawableAsync<String>(ptBackgroundImageLeft, ptBackgroundImageRight, ptSeekBar, validateProgress(progress!!), context,this).execute(imageLeftUrl, imageRightUrl)
 
-    fun loadImagesBySrc(imageLeftSrc: Int, imageRightSrc: Int) = ClipDrawableAsync<Int>(ptBackgroundImageLeft, ptBackgroundImageRight, ptSeekBar, validateProgress(progress!!), this).execute(imageLeftSrc, imageRightSrc)
+    fun loadImagesBySrc(imageLeftSrc: Int, imageRightSrc: Int) = ClipDrawableAsync<Int>(ptBackgroundImageLeft, ptBackgroundImageRight, ptSeekBar, validateProgress(progress!!), context,this).execute(imageLeftSrc, imageRightSrc)
 
     fun loadImagesByUrl(imageLeftUrl: String, imageRightUrl: String, progress: Int) {
         setProgress(progress)
-        ClipDrawableAsync<String>(ptBackgroundImageLeft, ptBackgroundImageRight, ptSeekBar, validateProgress(progress), this).execute(imageLeftUrl, imageRightUrl)
+        ClipDrawableAsync<String>(ptBackgroundImageLeft, ptBackgroundImageRight, ptSeekBar, validateProgress(progress), context, this).execute(imageLeftUrl, imageRightUrl)
     }
 
     fun loadImagesBySrc(imageLeftSrc: Int, imageRightSrc: Int, progress: Int) {
         setProgress(progress)
-        ClipDrawableAsync<Int>(ptBackgroundImageLeft, ptBackgroundImageRight, ptSeekBar, validateProgress(progress), this).execute(imageLeftSrc, imageRightSrc)
+        ClipDrawableAsync<Int>(ptBackgroundImageLeft, ptBackgroundImageRight, ptSeekBar, validateProgress(progress), context, this).execute(imageLeftSrc, imageRightSrc)
     }
 
     override fun loadingStatus(loadedSuccess: Boolean) {

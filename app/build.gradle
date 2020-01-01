@@ -1,27 +1,25 @@
-//apply plugin: 'com.android.application'
-//TODO remove LAUNCHER filter
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.factoryhr'
+apply plugin: 'com.android.application'
+
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
 buildscript{
-    ext.glide_version = "3.7.0"
+    ext.glide_version = '4.10.0'
     ext.constraint_layout_version = "1.1.0"
     ext.support_version = "27.1.1"
     ext.junit_version = "4.12"
-    ext.runner_version = "1.0.1"
-    ext.expresso_core_version = "3.0.1"
+    ext.runner_version = '1.0.2'
+    ext.expresso_core_version = '3.0.2'
 }
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
     defaultConfig {
-        //applicationId "com.d42gmail.cavar.beforeandafter"
+        applicationId "com.d42gmail.cavar.beforeandafter"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -32,13 +30,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation "com.android.support:appcompat-v7:$support_version"
-    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "com.github.bumptech.glide:glide:$glide_version"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "com.android.support.test:runner:$runner_version"
